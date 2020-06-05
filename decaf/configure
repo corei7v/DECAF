@@ -2792,9 +2792,11 @@ fi
 # After here, no more $cc or $ld runs
 
 # AWH - Comment out for debugging purposes
-if test "$debug" = "no" ; then
-  CFLAGS="-O2 $CFLAGS"
-fi
+# XXX for debugging
+#if test "$debug" = "no" ; then
+#  CFLAGS="-O2 $CFLAGS"
+#fi
+CFLAGS="$CFLAGS -O0 -g"
 
 # Consult white-list to determine whether to enable werror
 # by default.  Only enable by default for git builds
