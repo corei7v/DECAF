@@ -84,6 +84,7 @@ mon_cmd_t DECAF_info_cmds[] = {
 int g_bNeedFlush = 0;
 disk_info_t disk_info_internal[5];
 
+#if 0
 static gpa_t _DECAF_get_phys_addr(CPUState* env, gva_t addr) {
 	int mmu_idx, index;
 	uint32_t phys_addr;
@@ -108,6 +109,16 @@ static gpa_t _DECAF_get_phys_addr(CPUState* env, gva_t addr) {
 
 //			(void *) ((addr & TARGET_PAGE_MASK)+ env->tlb_table[mmu_idx][index].addend);
 	return (gpa_t) qemu_ram_addr_from_host_nofail(p);
+}
+#endif
+
+static gpa_t _DECAF_get_phys_addr(CPUState* env, gva_t addr) {
+	uint32_t phys_addr;
+	phys_addr = cpu_get_phys_page_debug(env, addr & TARGET_PAGE_MASK);
+	if (phys_addr == -1)
+		return -1;
+	phys_addr += addr & (TARGET_PAGE_SIZE - 1);
+	return phys_addr;
 }
 
 gpa_t DECAF_get_phys_addr(CPUState* env, gva_t addr)
@@ -156,7 +167,7 @@ DECAF_errno_t DECAF_memory_rw(CPUState* env, /*uint32_t*/target_ulong addr, void
 	while (len > 0) {
 		page = addr & TARGET_PAGE_MASK;
 		phys_addr = DECAF_get_phys_addr(env, page);
-		if (phys_addr == -1 || phys_addr > ram_size) {
+		if (phys_addr == -1) {
 			ret = -1;
 			break;
 		}
