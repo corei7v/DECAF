@@ -4786,8 +4786,10 @@ void stl_phys_notdirty(target_phys_addr_t addr, uint32_t val)
         ptr = qemu_get_ram_ptr(addr1);
         stl_p(ptr, val);
 #ifdef CONFIG_TCG_TAINT
-        cpu_single_env->tempidx = 0;
-        __taint_stl_raw_paddr(addr1, 0);
+        if (cpu_single_env) {
+            cpu_single_env->tempidx = 0;
+            __taint_stl_raw_paddr(addr1, 0);
+	}
 #endif
 
         if (unlikely(in_migration)) {
