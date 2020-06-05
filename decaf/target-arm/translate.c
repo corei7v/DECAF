@@ -9913,7 +9913,7 @@ undef:
 }
 
 #ifdef CONFIG_TCG_IR_LOG
-inline void log_tcg_ir(TranslationBlock *tb, target_ulong pc_ptr, target_ulong pc_start)
+static inline void log_tcg_ir(TranslationBlock *tb, target_ulong pc_ptr, target_ulong pc_start)
 {
     int i;
 

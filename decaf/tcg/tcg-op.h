@@ -2309,7 +2309,8 @@ static inline void tcg_gen_taint_qemu_st64(TCGv_i64 arg, TCGv addr, int mem_inde
 #else /* TCG_TARGET_REG_BITS == 32 */
 static inline void tcg_gen_DECAF_checkeip(tcg_target_long val1, tcg_target_long val2)
 {
-	tcg_gen_op2_i64(INDEX_op_DECAF_checkeip, val1 , val2);
+	tcg_gen_op2_i64(INDEX_op_DECAF_checkeip, MAKE_TCGV_I64(val1),
+                        MAKE_TCGV_I64(val2));
 }
 static inline void tcg_gen_taint_qemu_ld8u(TCGv ret, TCGv addr, int mem_index)
 {

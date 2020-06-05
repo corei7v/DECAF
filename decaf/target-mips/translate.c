@@ -42,7 +42,7 @@
 #endif /* CONFIG_TCG_TAINT */
 
 #ifdef CONFIG_TCG_IR_LOG
-inline void log_tcg_ir(TranslationBlock *tb)
+static inline void log_tcg_ir(TranslationBlock *tb)
 {
   int i;
 
